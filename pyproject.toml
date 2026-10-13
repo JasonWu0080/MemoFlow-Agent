@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "memoflow-agent"
+dynamic = ["version"]
+description = "A lightweight, extensible Python AI agent framework with model-driven tool calling, durable execution, permission-aware tools, and human-in-the-loop workflows."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+requires-python = ">=3.11"
+authors = [{ name = "Nanjing Junhe E-Commerce Co., Ltd." }]
+keywords = ["ai", "agent", "llm", "tool-calling", "human-in-the-loop", "durable-execution"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed",
+]
+dependencies = [
+    "pydantic>=2.6,<3",
+    "httpx>=0.27,<1",
+]
+
+[project.optional-dependencies]
+postgres = ["psycopg[binary]>=3.1,<4"]
+dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.10", "build>=1.2", "psycopg[binary]>=3.1,<4"]
+
+[project.urls]
+Homepage = "https://github.com/JasonWu0080/memoflow-agent"
+Documentation = "https://github.com/JasonWu0080/memoflow-agent/tree/main/docs"
+Issues = "https://github.com/JasonWu0080/memoflow-agent/issues"
+
+[tool.setuptools.dynamic]
+version = { attr = "memoflow_agent._version.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+memoflow_agent = ["py.typed", "persistence/schema.sql"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 130
+target-version = "py311"
+src = ["src", "tests", "examples"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501", "B008", "UP040"]
+
+[tool.mypy]
+python_version = "3.11"
+packages = ["memoflow_agent"]
+ignore_missing_imports = true
+warn_unused_ignores = false

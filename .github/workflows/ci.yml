@@ -1,0 +1,104 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -e ".[dev]"
+      - run: ruff check src tests examples
+      - run: ruff format --check src tests examples || true  # advisory until the codebase is formatted
+      - run: mypy
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13", "3.14"]
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      MEMOFLOW_AGENT_TEST_POSTGRES_DSN: postgresql://postgres:postgres@localhost:5432/postgres
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "${{ matrix.python }}" }
+      - run: pip install -e ".[dev]"
+      - run: pytest  # unit + integration (mocked providers) + PostgreSQL + recovery + security + examples
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install build twine
+      - run: python -m build
+      - run: twine check dist/*
+      - name: Install the wheel in a clean venv and import it
+        run: |
+          python -m venv /tmp/clean && /tmp/clean/bin/pip install dist/*.whl
+          /tmp/clean/bin/python -c "import memoflow_agent, sys; print(memoflow_agent.__version__)"
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -e . pip-audit
+      - name: Dependency vulnerabilities
+        run: pip-audit --skip-editable
+      - name: Secret patterns
+        run: python scripts/scan_secrets.py
+
+  licenses:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -e ".[postgres]" pip-licenses
+      - name: Runtime dependency licenses are permissive
+        run: >
+          pip-licenses --packages pydantic pydantic-core httpx httpcore anyio idna certifi h11 sniffio
+          typing-extensions annotated-types typing-inspection psycopg psycopg-binary
+          --fail-on="GNU General Public License v2 (GPLv2);GNU General Public License v3 (GPLv3);GNU Affero General Public License v3"
+
+  live:
+    # Real provider calls cost money: manual only, never on pull requests.
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    env:
+      MEMOFLOW_AGENT_LIVE_TESTS: "1"
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      MEMOFLOW_AGENT_LIVE_OPENAI_MODEL: ${{ vars.LIVE_OPENAI_MODEL }}
+      MEMOFLOW_AGENT_LIVE_ANTHROPIC_MODEL: ${{ vars.LIVE_ANTHROPIC_MODEL }}
+      MEMOFLOW_AGENT_LIVE_DEEPSEEK_MODEL: ${{ vars.LIVE_DEEPSEEK_MODEL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -e ".[dev]"
+      - run: pytest tests/test_providers.py -k live
