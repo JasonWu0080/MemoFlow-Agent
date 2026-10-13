@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -31,12 +31,12 @@ dependencies = [
 
 [project.optional-dependencies]
 postgres = ["psycopg[binary]>=3.1,<4"]
-dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.10", "build>=1.2", "psycopg[binary]>=3.1,<4"]
+dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.10", "build>=1.2", "setuptools>=77", "psycopg[binary]>=3.1,<4"]
 
 [project.urls]
-Homepage = "https://github.com/JasonWu0080/memoflow-agent"
-Documentation = "https://github.com/JasonWu0080/memoflow-agent/tree/main/docs"
-Issues = "https://github.com/JasonWu0080/memoflow-agent/issues"
+Homepage = "https://github.com/JasonWu0080/MemoFlow-Agent"
+Documentation = "https://github.com/JasonWu0080/MemoFlow-Agent/tree/main/docs"
+Issues = "https://github.com/JasonWu0080/MemoFlow-Agent/issues"
 
 [tool.setuptools.dynamic]
 version = { attr = "memoflow_agent._version.__version__" }

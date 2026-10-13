@@ -6,9 +6,9 @@
 
 ## [未发布]
 
-## [0.1.0] —— 尚未发布
+## [0.1.0] —— 2026-10-14
 
-第一个公开发布候选版本：从 MemoFlow AI Agent V4 中抽取的 Agent 内核。
+第一个公开发布版本：从 MemoFlow AI Agent V4 中抽取的 Agent 内核。
 
 ### 新增
 - `AgentLoop`：唯一的、模型驱动的循环（FINAL / TOOL_CALL / CLARIFICATION），预算收尾、无效输出纠正、取消、挂起、失败处理；供嵌入应用使用的 `Application` 钩子。

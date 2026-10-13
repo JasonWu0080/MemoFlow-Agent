@@ -9,7 +9,7 @@ MemoFlow Agent is the agent kernel of the AI assistant in the [MemoFlow](#about)
 standalone package. The MemoFlow app runs this same loop through an application adapter; there is no
 private fork of it.
 
-[中文文档](README.zh-CN.md)
+[中文文档](https://github.com/JasonWu0080/MemoFlow-Agent/blob/main/README.zh-CN.md)
 
 > Status: **v0.1.0, alpha.** The API may still change before 1.0.
 
@@ -35,7 +35,7 @@ private fork of it.
 - **Providers:** OpenAI, Anthropic and DeepSeek. Adding another takes about 50 lines.
 
 Not in v0.1: multi-agent orchestration, workflow builders, built-in RAG or vector stores, browser or shell
-tools. See [docs/roadmap.md](docs/roadmap.md).
+tools. See [docs/roadmap.md](https://github.com/JasonWu0080/MemoFlow-Agent/blob/main/docs/roadmap.md).
 
 ## Installation
 
@@ -186,27 +186,27 @@ Your application ── Application hooks (messages, billing, payloads)
 ```
 
 The loop is synchronous by design (ADR-K1): it runs next to synchronous database code in a thread pool.
-The async API drives it in a worker thread. See [docs/architecture.md](docs/architecture.md).
+The async API drives it in a worker thread. See [docs/architecture.md](https://github.com/JasonWu0080/MemoFlow-Agent/blob/main/docs/architecture.md).
 
 ## Documentation
 
-- [Architecture](docs/architecture.md)
-- [API reference](docs/api.md)
-- [Security model](docs/security.md)
-- [Roadmap](docs/roadmap.md)
-- [Examples](examples/): basic agent, tools, streaming, multiple providers, permissions, approval,
+- [Architecture](https://github.com/JasonWu0080/MemoFlow-Agent/blob/main/docs/architecture.md)
+- [API reference](https://github.com/JasonWu0080/MemoFlow-Agent/blob/main/docs/api.md)
+- [Security model](https://github.com/JasonWu0080/MemoFlow-Agent/blob/main/docs/security.md)
+- [Roadmap](https://github.com/JasonWu0080/MemoFlow-Agent/blob/main/docs/roadmap.md)
+- [Examples](https://github.com/JasonWu0080/MemoFlow-Agent/tree/main/examples): basic agent, tools, streaming, multiple providers, permissions, approval,
   persistence, knowledge agent
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Report security issues privately as described in
-[SECURITY.md](SECURITY.md).
+See [CONTRIBUTING.md](https://github.com/JasonWu0080/MemoFlow-Agent/blob/main/CONTRIBUTING.md). Report security issues privately as described in
+[SECURITY.md](https://github.com/JasonWu0080/MemoFlow-Agent/blob/main/SECURITY.md).
 
 ## License
 
 Copyright 2026 Nanjing Junhe E-Commerce Co., Ltd. Licensed under the Apache License 2.0; see
-[LICENSE](LICENSE) and [NOTICE](NOTICE). The license does not cover the names "MemoFlow" and
-"MemoFlow Agent"; see [TRADEMARK.md](TRADEMARK.md).
+[LICENSE](https://github.com/JasonWu0080/MemoFlow-Agent/blob/main/LICENSE) and [NOTICE](https://github.com/JasonWu0080/MemoFlow-Agent/blob/main/NOTICE). The license does not cover the names "MemoFlow" and
+"MemoFlow Agent"; see [TRADEMARK.md](https://github.com/JasonWu0080/MemoFlow-Agent/blob/main/TRADEMARK.md).
 
 ## About
 

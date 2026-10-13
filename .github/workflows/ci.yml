@@ -13,8 +13,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with: { python-version: "3.12" }
       - run: pip install -e ".[dev]"
       - run: ruff check src tests examples
@@ -38,8 +38,8 @@ jobs:
     env:
       MEMOFLOW_AGENT_TEST_POSTGRES_DSN: postgresql://postgres:postgres@localhost:5432/postgres
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with: { python-version: "${{ matrix.python }}" }
       - run: pip install -e ".[dev]"
       - run: pytest  # unit + integration (mocked providers) + PostgreSQL + recovery + security + examples
@@ -47,8 +47,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with: { python-version: "3.12" }
       - run: pip install build twine
       - run: python -m build
@@ -61,9 +61,9 @@ jobs:
   security:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with: { fetch-depth: 0 }
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with: { python-version: "3.12" }
       - run: pip install -e . pip-audit
       - name: Dependency vulnerabilities
@@ -74,8 +74,8 @@ jobs:
   licenses:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with: { python-version: "3.12" }
       - run: pip install -e ".[postgres]" pip-licenses
       - name: Runtime dependency licenses are permissive
@@ -97,8 +97,8 @@ jobs:
       MEMOFLOW_AGENT_LIVE_ANTHROPIC_MODEL: ${{ vars.LIVE_ANTHROPIC_MODEL }}
       MEMOFLOW_AGENT_LIVE_DEEPSEEK_MODEL: ${{ vars.LIVE_DEEPSEEK_MODEL }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with: { python-version: "3.12" }
       - run: pip install -e ".[dev]"
       - run: pytest tests/test_providers.py -k live
